@@ -60,7 +60,7 @@ public class meow extends Plugin {
                 carViewLayout.addView(carView);
 
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) carView.getLayoutParams();
-                params.width = DimenUtils.dpToPx(30);
+                params.width = DimenUtils.dpToPx(40);
                 params.height = DimenUtils.dpToPx(30);
 
                 carViewLayout.setOnClickListener(v -> {
