@@ -108,7 +108,7 @@ public class neutered extends Plugin {
                 carViewLayout.addView(carView);
 
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) carView.getLayoutParams();
-                params.width = DimenUtils.dpToPx(30);
+                params.width = DimenUtils.dpToPx(40);
                 params.height = DimenUtils.dpToPx(30);
 
                 // SILENT TYPING
@@ -125,8 +125,8 @@ public class neutered extends Plugin {
                 keyboardViewLayout.addView(imageView2);
 
                 FrameLayout.LayoutParams karams = (FrameLayout.LayoutParams) keyboardView.getLayoutParams();
-                karams.width=DimenUtils.dpToPx(35);
-                karams.height=DimenUtils.dpToPx(40);
+                karams.width=DimenUtils.dpToPx(30);
+                karams.height=DimenUtils.dpToPx(35);
 
                 keyboardView.setLayoutParams(karams);
                 imageView2.setLayoutParams(karams);

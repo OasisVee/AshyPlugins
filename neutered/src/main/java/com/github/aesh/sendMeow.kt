@@ -38,7 +38,7 @@ class sendMeow {
                 }
 
                 override fun onError(th: Throwable) {
-                    Utils.showToast("$th \n[neutered] Please report this error ! :3", showLonger = true)
+                    Utils.showToast("$th \nAn exception occurred", showLonger = true)
                     th.printStackTrace()
                 }
 
