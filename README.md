@@ -1,5 +1,5 @@
-# Aeshy Plugin List
-A list of plugins for Aliucord made by yours truly [[ @aesh.ketchum ]]()
+# Ashy Plugin List
+A list of plugins for Aliucord made by yours truly [ @aesh.ketchum ]
 
 ## meow
 Adds a car to the chat bar that makes you say "meow" when pressed with an adjustable chance of saying "meow :3" and other variations.
@@ -53,12 +53,12 @@ Plugins are released in the [#plugins-list](https://canary.discord.com/channels/
 **INSTRUCCIONES EN ESPAÑOL**
 
 - Únete el servidor Aliucord utilizando el enlace de arriba
-- Toque el Icono de Búsqueda (🔍) y escribe «en:#plugins-list» + nombre del plugin
+- Toca el Icono de Búsqueda (🔍) y escribe «en:#plugins-list» + nombre del plugin
 
-        EJ. en:#plugins-list meow
-- Ir al mensaje por toque o toque prolongado el cuerpo
-- Toque prolongado el *cuerpo* del mensaje [ ¡ No el enlace github ! ]
-- Toque «Open PluginDownloader», la primera opción del menú, y encontrar el plugin que quiere instalar desde el repo
+        Ej. en:#plugins-list meow
+- Ve al mensaje tocando o tocando prolongadamente el cuerpo
+- Toca prolongadamente el *cuerpo* del mensaje [ ¡ No el enlace github ! ]
+- Toca «Open PluginDownloader», la primera opción del menú, y encuentra el plugin que quiere instalar desde el repositorio
 
 ## Stolen Code
 This project takes a lot of "inspiration" from similar plugins and public code.
@@ -67,11 +67,11 @@ All stolen code was released under public domain, but I still feel bad, so credi
 
 + **Vee -- @vending.machine;**
 
-Kotlin logic for sending a message with REST api
+[Kotlin logic](https://canary.discord.com/channels/811255666990907402/881994872289116170/881996237426004028) for sending a message with REST api
 
 + **Mantika -- @mantikafasi;**
 
-BetterSilentTyping plugin + Button logic
+[BetterSilentTyping](https://github.com/mantikafasi/AliucordPlugins/tree/main/BetterSilentTyping) plugin + [Button Logic]()
 
 ## License
 Everything in this repo is released into the public domain. You may do whatever you want to whoever you want whenever you want wherever you want however you want with this code.

@@ -1,5 +1,5 @@
 version = "1.0.0"
-description = "meow"
+description = "meow :3"
 
 aliucord {
     // Changelog of your plugin

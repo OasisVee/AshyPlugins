@@ -41,8 +41,8 @@ subprojects {
     // Fill out with your info
     aliucord {
         author("aesh.ketchup", 1262494099215351912L)
-        updateUrl.set("https://raw.githubusercontent.com/USERNAME/AshyPlugins/builds/updater.json")
-        buildUrl.set("https://raw.githubusercontent.com/USERNAME/AshyPlugins/builds/%s.zip")
+        updateUrl.set("https://raw.githubusercontent.com/Kaiden-Aesh/AshyPlugins/builds/updater.json")
+        buildUrl.set("https://raw.githubusercontent.com/Kaiden-Aesh/AshyPlugins/builds/%s.zip")
     }
 
     android {
