@@ -19,14 +19,12 @@ import android.widget.Toast;
 
 import com.aliucord.Utils;
 import com.aliucord.api.SettingsAPI;
-import com.aliucord.views.Divider;
 import com.discord.app.AppBottomSheet;
 import com.discord.views.CheckedSetting;
 
 import java.util.Locale;
 
 public class Settings extends AppBottomSheet {
-
     SettingsAPI settings;
     neutered plugin;
 
@@ -42,54 +40,53 @@ public class Settings extends AppBottomSheet {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-
         String[] phrases = new String[0];
 
-        if(!esLang(getContext())) {
+        if (!esLang(getContext())) {
             phrases = new String[] {
-                    // TEXT VIEW PHRASES //
-                    "   Percent chance of :3",
-                    "   Percent chance of extra character\n   E.G. meoww, purrr, nyann, ect",
-                    "   Percent chance of replacing meow with *purr*",
-                    "   Percent chance of replacing meow and *purr* with nyan",
-                    "   Percent chance of overriding everything with miau",
-                    "   Percent chance of placing a tilde after the first word ~", // 5
-                    "   Percent chance of using ≽^•⩊•^≼ instead of :3",
-                    // OTHER //
-                    "   Ignore everything and always use miau", // 7
-                    "Allow more phrases", // 8
-                    "E.G. *purr*, nyan, mreeowww, etc", // 9
-                    "Always force miau", // 10
-                    "miauu :3", // 11
-                    "-- BetterSilentTyping Settings --", // 12
-                    "Show Toast Message When Silent Typing is Toggled", // 13
-                    "Hide Keyboard Icon", // 14
-                    "Open Color Picker", // 15
-                    "Custom Meow Emoji", // 16
-                    "Set a custom emoji for the meow button" // 17
+                // TEXT VIEW PHRASES //
+                "   Percent chance of :3",
+                "   Percent chance of extra character\n   E.G. meoww, purrr, nyann, ect",
+                "   Percent chance of replacing meow with *purr*",
+                "   Percent chance of replacing meow and *purr* with nyan",
+                "   Percent chance of overriding everything with miau",
+                "   Percent chance of placing a tilde after the first word ~", // 5
+                "   Percent chance of using ≽^•⩊•^≼ instead of :3",
+                // OTHER //
+                "   Ignore everything and always use miau", // 7
+                "Allow more phrases", // 8
+                "E.G. *purr*, nyan, mreeowww, etc", // 9
+                "Always force miau", // 10
+                "miauu :3", // 11
+                "-- BetterSilentTyping Settings --", // 12
+                "Show Toast Message When Silent Typing is Toggled", // 13
+                "Hide Keyboard Icon", // 14
+                "Open Color Picker", // 15
+                "Custom Meow Emoji", // 16
+                "Set a custom emoji for the meow button" // 17
             };
         } else {
             phrases = new String[] {
-                    // FRASES PA LA VISTA DE TEXTO //
-                    "   Probabilidad de :3",
-                    "   Probabilidad de Más Caracteres\n   Ej. miauu, purrr, nyann, etc.",
-                    "   Probabilidad de sustituir meow con « *purr* »",
-                    "   Probabilidad de sustituir meow y *purr* por « nyan »",
-                    "   Probabilidad de sustituir Todo por « miau »",
-                    "   Probabilidad de Añadir una Virgulilla Después la Palabra Principal ~", // 5
-                    "   Probabilidad de Usar ≽^•⩊•^≼ en Lugar de :3",
-                    // OTROS //
-                    "   Ignorar Todas las Otras y Siempre usar « miau »", // 7
-                    "Permitir más Frases", // 8
-                    "Ej. *purr*, nyan, mreeowww, etc.", // 9
-                    "Siempre Forzar miau", // 10
-                    "miau :3", // diferencía intentional, 11
-                    "-- Opciones para BetterSilentTyping --", // 12
-                    "Mostrar Mensaje Emergente Cuando se Conmute SilentTyping", // 13
-                    "Ocultar Ícono del Teclado", // 14
-                    "Abrir Selector de Color", // 15
-                    "Emoji de Meow Personalizado", // 16
-                    "Establece un emoji personalizado para el botón de meow" // 17
+                // FRASES PA LA VISTA DE TEXTO //
+                "   Probabilidad de :3",
+                "   Probabilidad de Más Caracteres\n   Ej. miauu, purrr, nyann, etc.",
+                "   Probabilidad de sustituir meow con « *purr* »",
+                "   Probabilidad de sustituir meow y *purr* por « nyan »",
+                "   Probabilidad de sustituir Todo por « miau »",
+                "   Probabilidad de Añadir una Virgulilla Después la Palabra Principal ~", // 5
+                "   Probabilidad de Usar ≽^•⩊•^≼ en Lugar de :3",
+                // OTROS //
+                "   Ignorar Todas las Otras y Siempre usar « miau »", // 7
+                "Permitir más Frases", // 8
+                "Ej. *purr*, nyan, mreeowww, etc.", // 9
+                "Siempre Forzar miau", // 10
+                "miau :3", // diferencía intentional, 11
+                "-- Opciones para BetterSilentTyping --", // 12
+                "Mostrar Mensaje Emergente Cuando se Conmute SilentTyping", // 13
+                "Ocultar Ícono del Teclado", // 14
+                "Abrir Selector de Color", // 15
+                "Emoji de Meow Personalizado", // 16
+                "Establece un emoji personalizado para el botón de meow" // 17
             };
         }
 
@@ -100,8 +97,8 @@ public class Settings extends AppBottomSheet {
         View dragHandle = new View(context);
         dragHandle.setBackgroundColor(Color.LTGRAY);
         LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                dpToPx(context, 4)
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            dpToPx(context, 4)
         );
         handleParams.setMargins(dpToPx(context, 16), dpToPx(context, 8), dpToPx(context, 16), dpToPx(context, 8));
         dragHandle.setLayoutParams(handleParams);
@@ -109,16 +106,16 @@ public class Settings extends AppBottomSheet {
         View divider = new View(context);
         divider.setBackgroundColor(Color.LTGRAY);
         LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                dpToPx(context, 1)
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            dpToPx(context, 1)
         );
         divider.setLayoutParams(dividerParams);
 
         View padding = new View(context);
         padding.setBackgroundColor(Color.DKGRAY);
         LinearLayout.LayoutParams paddingParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                dpToPx(context, 10)
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            dpToPx(context, 10)
         );
         padding.setLayoutParams(paddingParams);
 
@@ -136,22 +133,21 @@ public class Settings extends AppBottomSheet {
         });
 
         // SILENT TYPING //
-
         TextView st = new TextView(getContext());
         st.setText(phrases[12]);
         st.setTextColor(Color.WHITE);
         st.setTypeface(null, Typeface.BOLD);
 
         lay.setOrientation(LinearLayout.VERTICAL);
-        CheckedSetting fo = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH,phrases[13],"");
-        fo.setChecked(settings.getBool("showToast",false));
+        CheckedSetting fo = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[13], "");
+        fo.setChecked(settings.getBool("showToast", false));
         fo.setOnCheckedListener(aBoolean -> {
-            settings.setBool("showToast",aBoolean);
+            settings.setBool("showToast", aBoolean);
         });
-        CheckedSetting b= Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH,phrases[14],"");
-        b.setChecked(settings.getBool("hideKeyboard",false));
+        CheckedSetting b = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[14], "");
+        b.setChecked(settings.getBool("hideKeyboard", false));
         b.setOnCheckedListener(aBoolean -> {
-            settings.setBool("hideKeyboard",aBoolean);
+            settings.setBool("hideKeyboard", aBoolean);
             plugin.setHideKeyboard(aBoolean);
         });
 
@@ -159,7 +155,7 @@ public class Settings extends AppBottomSheet {
         button.setText(phrases[15]);
         button.setOnClickListener(f -> {
             com.github.aesh.ColorPicker picker = new com.github.aesh.ColorPicker();
-            Utils.openPageWithProxy(context,picker);
+            Utils.openPageWithProxy(context, picker);
         });
 
         // Add emoji setting
@@ -170,7 +166,7 @@ public class Settings extends AppBottomSheet {
         
         // Get current emoji or use default
         String currentEmoji = settings.getString("meowEmoji", "🐈");
-        emojiInput.setText(""); // Start with empty text
+        emojiInput.setText(currentEmoji); // Set the current emoji or default
 
         emojiInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -188,10 +184,11 @@ public class Settings extends AppBottomSheet {
                     // Show a toast to confirm
                     Toast.makeText(context, "Meow emoji set to: " + emoji, Toast.LENGTH_SHORT).show();
                 } else {
-                    // If emoji is deleted, reset to default hint
-                    settings.setString("meowEmoji", "🐈");
+                    // If emoji is deleted, do not reset to default
+                    settings.remove("meowEmoji");
+                    emojiInput.setHint("🐈");
                     
-                    Toast.makeText(context, "Meow emoji reset to default: 🐈", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Meow emoji reset to default hint", Toast.LENGTH_SHORT).show();
                 }
 
                 // Prompt restart like in BetterChatbox
@@ -275,10 +272,10 @@ public class Settings extends AppBottomSheet {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
