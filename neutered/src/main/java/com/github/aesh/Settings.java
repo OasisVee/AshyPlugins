@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aliucord.Utils;
 import com.aliucord.api.SettingsAPI;
@@ -59,11 +60,13 @@ public class Settings extends AppBottomSheet {
                     "Allow more phrases", // 8
                     "E.G. *purr*, nyan, mreeowww, etc", // 9
                     "Always force miau", // 10
-                    "miauu :3", // intentional difference, 11
+                    "miauu :3", // 11
                     "-- BetterSilentTyping Settings --", // 12
                     "Show Toast Message When Silent Typing is Toggled", // 13
                     "Hide Keyboard Icon", // 14
-                    "Open Color Picker" // 15
+                    "Open Color Picker", // 15
+                    "Custom Meow Emoji", // 16
+                    "Set a custom emoji for the meow button" // 17
             };
         } else {
             phrases = new String[] {
@@ -84,7 +87,9 @@ public class Settings extends AppBottomSheet {
                     "-- Opciones para BetterSilentTyping --", // 12
                     "Mostrar Mensaje Emergente Cuando se Conmute SilentTyping", // 13
                     "Ocultar Ícono del Teclado", // 14
-                    "Abrir Selector de Color" // 15
+                    "Abrir Selector de Color", // 15
+                    "Emoji de Meow Personalizado", // 16
+                    "Establece un emoji personalizado para el botón de meow" // 17
             };
         }
 
@@ -157,7 +162,34 @@ public class Settings extends AppBottomSheet {
             Utils.openPageWithProxy(context,picker);
         });
 
-        // SILENT TYPING //
+        // Add emoji setting
+        TextView emojiLabel = makeTextView(phrases[16]);
+        EditText emojiInput = makeEditText();
+        emojiInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        emojiInput.setHint("🐈");
+        
+        // Get current emoji or use default
+        String currentEmoji = settings.getString("meowEmoji", "🐈");
+        emojiInput.setText(currentEmoji);
+
+        emojiInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String emoji = s.toString().trim();
+                if (!emoji.isEmpty()) {
+                    settings.setString("meowEmoji", emoji);
+                    
+                    // Show a toast to confirm
+                    Toast.makeText(context, "Meow emoji set to: " + emoji, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // Every TextView label in order used for the EditText fields
         TextView lChanceShortFace = makeTextView(phrases[0]);
@@ -222,6 +254,10 @@ public class Settings extends AppBottomSheet {
         lay.addView(b);
         lay.addView(button);
 
+        // Add emoji settings
+        lay.addView(emojiLabel);
+        lay.addView(emojiInput);
+
         return lay;
     }
 
@@ -247,7 +283,6 @@ public class Settings extends AppBottomSheet {
             }
         });
     }
-
 
     public EditText makeEditText() {
         EditText editText = new EditText(getContext());
