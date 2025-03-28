@@ -94,7 +94,7 @@ public class neutered extends Plugin {
             WidgetChatInputEditText thisobj = ((WidgetChatInputEditText) callFrame.thisObject);
             try {
 
-                car = neutered.emojiToDrawable(context, "🚗");
+                car = neutered.emojiToDrawable(context, "🐈");
 
                 // Ignore the warning it'll be fine trust :3
                 FlexEditText etext = (FlexEditText) ReflectUtils.getField(thisobj, "editText");
