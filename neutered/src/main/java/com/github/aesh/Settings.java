@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Bundle; // Added import for Bundle
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
