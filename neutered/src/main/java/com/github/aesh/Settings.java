@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -28,6 +27,12 @@ public class Settings extends AppBottomSheet {
     SettingsAPI settings;
     neutered plugin;
 
+    // Color Constants
+    private static final int BACKGROUND_COLOR = Color.parseColor("#1E1E1E");
+    private static final int TEXT_COLOR = Color.parseColor("#E0E0E0");
+    private static final int ACCENT_COLOR = Color.parseColor("#4CAF50");
+    private static final int DIVIDER_COLOR = Color.parseColor("#333333");
+
     public Settings(SettingsAPI set, neutered plugin) {
         settings = set;
         this.plugin = plugin;
@@ -40,133 +45,158 @@ public class Settings extends AppBottomSheet {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        String[] phrases = new String[0];
-
-        if (!esLang(getContext())) {
-            phrases = new String[] {
-                // TEXT VIEW PHRASES //
-                "   Percent chance of :3",
-                "   Percent chance of extra character\n   E.G. meoww, purrr, nyann, ect",
-                "   Percent chance of replacing meow with *purr*",
-                "   Percent chance of replacing meow and *purr* with nyan",
-                "   Percent chance of overriding everything with miau",
-                "   Percent chance of placing a tilde after the first word ~", // 5
-                "   Percent chance of using ≽^•⩊•^≼ instead of :3",
-                // OTHER //
-                "   Ignore everything and always use miau", // 7
-                "Allow more phrases", // 8
-                "E.G. *purr*, nyan, mreeowww, etc", // 9
-                "Always force miau", // 10
-                "miauu :3", // 11
-                "-- BetterSilentTyping Settings --", // 12
-                "Show Toast Message When Silent Typing is Toggled", // 13
-                "Hide Keyboard Icon", // 14
-                "Open Color Picker", // 15
-                "Custom Meow Emoji", // 16
-                "Set a custom emoji for the meow button" // 17
-            };
-        } else {
-            phrases = new String[] {
-                // FRASES PA LA VISTA DE TEXTO //
-                "   Probabilidad de :3",
-                "   Probabilidad de Más Caracteres\n   Ej. miauu, purrr, nyann, etc.",
-                "   Probabilidad de sustituir meow con « *purr* »",
-                "   Probabilidad de sustituir meow y *purr* por « nyan »",
-                "   Probabilidad de sustituir Todo por « miau »",
-                "   Probabilidad de Añadir una Virgulilla Después la Palabra Principal ~", // 5
-                "   Probabilidad de Usar ≽^•⩊•^≼ en Lugar de :3",
-                // OTROS //
-                "   Ignorar Todas las Otras y Siempre usar « miau »", // 7
-                "Permitir más Frases", // 8
-                "Ej. *purr*, nyan, mreeowww, etc.", // 9
-                "Siempre Forzar miau", // 10
-                "miau :3", // diferencía intentional, 11
-                "-- Opciones para BetterSilentTyping --", // 12
-                "Mostrar Mensaje Emergente Cuando se Conmute SilentTyping", // 13
-                "Ocultar Ícono del Teclado", // 14
-                "Abrir Selector de Color", // 15
-                "Emoji de Meow Personalizado", // 16
-                "Establece un emoji personalizado para el botón de meow" // 17
-            };
-        }
-
         Context context = layoutInflater.getContext();
-        LinearLayout lay = new LinearLayout(context);
-        lay.setOrientation(LinearLayout.VERTICAL);
+        
+        // Determine language for localization
+        String[] phrases = getPhrases(context);
 
-        View dragHandle = new View(context);
-        dragHandle.setBackgroundColor(Color.LTGRAY);
-        LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            dpToPx(context, 4)
-        );
-        handleParams.setMargins(dpToPx(context, 16), dpToPx(context, 8), dpToPx(context, 16), dpToPx(context, 8));
-        dragHandle.setLayoutParams(handleParams);
+        // Main layout setup
+        LinearLayout mainLayout = new LinearLayout(context);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setBackgroundColor(BACKGROUND_COLOR);
+        mainLayout.setPadding(dpToPx(context, 16), dpToPx(context, 16), dpToPx(context, 16), dpToPx(context, 16));
 
-        View divider = new View(context);
-        divider.setBackgroundColor(Color.LTGRAY);
+        // Title
+        TextView titleView = new TextView(context);
+        titleView.setText("Neutered Plugin Settings");
+        titleView.setTextColor(ACCENT_COLOR);
+        titleView.setTextSize(20);
+        titleView.setTypeface(null, Typeface.BOLD);
+        titleView.setPadding(0, 0, 0, dpToPx(context, 16));
+        mainLayout.addView(titleView);
+
+        // Meow Randomization Section
+        addSectionHeader(mainLayout, "Meow Randomization", phrases);
+
+        // Chance Settings
+        addChanceSettings(mainLayout, phrases, context);
+
+        // Additional Meow Options
+        addMeowOptions(mainLayout, phrases, context);
+
+        // Silent Typing Section
+        addSilentTypingSettings(mainLayout, phrases, context);
+
+        // Emoji Customization
+        addEmojiSettings(mainLayout, phrases, context);
+
+        // Color Picker Button
+        addColorPickerButton(mainLayout, phrases, context);
+
+        return mainLayout;
+    }
+
+    private void addSectionHeader(LinearLayout layout, String title, String[] phrases) {
+        TextView sectionHeader = new TextView(layout.getContext());
+        sectionHeader.setText(title);
+        sectionHeader.setTextColor(ACCENT_COLOR);
+        sectionHeader.setTypeface(null, Typeface.BOLD);
+        sectionHeader.setTextSize(16);
+        sectionHeader.setPadding(0, dpToPx(layout.getContext(), 16), 0, dpToPx(layout.getContext(), 8));
+        layout.addView(sectionHeader);
+        
+        View divider = new View(layout.getContext());
+        divider.setBackgroundColor(DIVIDER_COLOR);
         LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            dpToPx(context, 1)
+            dpToPx(layout.getContext(), 1)
         );
-        divider.setLayoutParams(dividerParams);
+        layout.addView(divider, dividerParams);
+    }
 
-        View padding = new View(context);
-        padding.setBackgroundColor(Color.DKGRAY);
-        LinearLayout.LayoutParams paddingParams = new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            dpToPx(context, 10)
+    private void addChanceSettings(LinearLayout layout, String[] phrases, Context context) {
+        String[] chanceKeys = {
+            "chanceShortFace", "chanceExtraW", "chancePurr", 
+            "chanceNyan", "chanceMiau", "chanceTilde", "chanceLongFace"
+        };
+        
+        int[] defaultValues = {30, 0, 0, 0, 0, 0, 0};
+
+        for (int i = 0; i < chanceKeys.length; i++) {
+            TextView label = makeTextView(phrases[i]);
+            label.setTextColor(TEXT_COLOR);
+            layout.addView(label);
+
+            EditText input = makeEditText();
+            input.setTextColor(TEXT_COLOR);
+            input.setHintTextColor(Color.GRAY);
+            
+            addTextWatcherForSettings(input, chanceKeys[i], defaultValues[i]);
+            layout.addView(input);
+        }
+
+        // Allow Extra Phrases Toggle
+        CheckedSetting extraPhrasesToggle = Utils.createCheckedSetting(
+            context, 
+            CheckedSetting.ViewType.SWITCH, 
+            phrases[8], 
+            phrases[9]
         );
-        padding.setLayoutParams(paddingParams);
+        extraPhrasesToggle.setChecked(settings.getBool("extraMeows", false));
+        extraPhrasesToggle.setOnCheckedListener(aBoolean -> 
+            settings.setBool("extraMeows", aBoolean)
+        );
+        layout.addView(extraPhrasesToggle);
+    }
 
-        // Create CheckedSetting for the switch
-        CheckedSetting a = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[8], phrases[9]);
-        a.setChecked(settings.getBool("extraMeows", false));
-        a.setOnCheckedListener(aBoolean -> {
-            settings.setBool("extraMeows", aBoolean);
-        });
+    private void addMeowOptions(LinearLayout layout, String[] phrases, Context context) {
+        CheckedSetting forceMiauToggle = Utils.createCheckedSetting(
+            context, 
+            CheckedSetting.ViewType.SWITCH, 
+            phrases[10], 
+            phrases[11]
+        );
+        forceMiauToggle.setChecked(settings.getBool("forceMiau", false));
+        forceMiauToggle.setOnCheckedListener(aBoolean -> 
+            settings.setBool("forceMiau", aBoolean)
+        );
+        layout.addView(forceMiauToggle);
+    }
 
-        CheckedSetting z = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[10], phrases[11]);
-        z.setChecked(settings.getBool("forceMiau", false));
-        z.setOnCheckedListener(aBoolean -> {
-            settings.setBool("forceMiau", aBoolean);
-        });
+    private void addSilentTypingSettings(LinearLayout layout, String[] phrases, Context context) {
+        addSectionHeader(layout, "Silent Typing", phrases);
 
-        // SILENT TYPING //
-        TextView st = new TextView(getContext());
-        st.setText(phrases[12]);
-        st.setTextColor(Color.WHITE);
-        st.setTypeface(null, Typeface.BOLD);
+        CheckedSetting showToastToggle = Utils.createCheckedSetting(
+            context, 
+            CheckedSetting.ViewType.SWITCH, 
+            phrases[13], 
+            ""
+        );
+        showToastToggle.setChecked(settings.getBool("showToast", false));
+        showToastToggle.setOnCheckedListener(aBoolean -> 
+            settings.setBool("showToast", aBoolean)
+        );
+        layout.addView(showToastToggle);
 
-        lay.setOrientation(LinearLayout.VERTICAL);
-        CheckedSetting fo = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[13], "");
-        fo.setChecked(settings.getBool("showToast", false));
-        fo.setOnCheckedListener(aBoolean -> {
-            settings.setBool("showToast", aBoolean);
-        });
-        CheckedSetting b = Utils.createCheckedSetting(context, CheckedSetting.ViewType.SWITCH, phrases[14], "");
-        b.setChecked(settings.getBool("hideKeyboard", false));
-        b.setOnCheckedListener(aBoolean -> {
+        CheckedSetting hideKeyboardToggle = Utils.createCheckedSetting(
+            context, 
+            CheckedSetting.ViewType.SWITCH, 
+            phrases[14], 
+            ""
+        );
+        hideKeyboardToggle.setChecked(settings.getBool("hideKeyboard", false));
+        hideKeyboardToggle.setOnCheckedListener(aBoolean -> {
             settings.setBool("hideKeyboard", aBoolean);
             plugin.setHideKeyboard(aBoolean);
         });
+        layout.addView(hideKeyboardToggle);
+    }
 
-        Button button = new Button(context);
-        button.setText(phrases[15]);
-        button.setOnClickListener(f -> {
-            com.github.aesh.ColorPicker picker = new com.github.aesh.ColorPicker();
-            Utils.openPageWithProxy(context, picker);
-        });
+    private void addEmojiSettings(LinearLayout layout, String[] phrases, Context context) {
+        addSectionHeader(layout, "Emoji Customization", phrases);
 
-        // Add emoji setting
         TextView emojiLabel = makeTextView(phrases[16]);
+        emojiLabel.setTextColor(TEXT_COLOR);
+        layout.addView(emojiLabel);
+
         EditText emojiInput = makeEditText();
         emojiInput.setInputType(InputType.TYPE_CLASS_TEXT);
         emojiInput.setHint("🐈");
+        emojiInput.setTextColor(TEXT_COLOR);
+        emojiInput.setHintTextColor(Color.GRAY);
         
-        // Get current emoji or use default
         String currentEmoji = settings.getString("meowEmoji", "🐈");
-        emojiInput.setText(currentEmoji); // Set the current emoji or default
+        emojiInput.setText(currentEmoji);
 
         emojiInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -180,92 +210,81 @@ public class Settings extends AppBottomSheet {
                 String emoji = s.toString().trim();
                 if (!emoji.isEmpty()) {
                     settings.setString("meowEmoji", emoji);
-                    
-                    // Show a toast to confirm
                     Toast.makeText(context, "Meow emoji set to: " + emoji, Toast.LENGTH_SHORT).show();
                 } else {
-                    // If emoji is deleted, do not reset to default
                     settings.remove("meowEmoji");
                     emojiInput.setHint("🐈");
-                    
-                    Toast.makeText(context, "Meow emoji reset to default hint", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Meow emoji reset to default", Toast.LENGTH_SHORT).show();
                 }
-
-                // Prompt restart like in BetterChatbox
                 Utils.promptRestart("Restart to apply changes");
             }
         });
-
-        // Every TextView label in order used for the EditText fields
-        TextView lChanceShortFace = makeTextView(phrases[0]);
-        TextView lChanceExtraW = makeTextView(phrases[1]);
-        TextView lChancePurr = makeTextView(phrases[2]);
-        TextView lChanceNyan = makeTextView(phrases[3]);
-        TextView lChanceMiau = makeTextView(phrases[4]);
-        TextView lChanceTilde = makeTextView(phrases[5]);
-        TextView lChanceLongFace = makeTextView(phrases[6]);
-
-        // Every EditText field in order
-        EditText shortFace = makeEditText();
-        EditText extraW = makeEditText();
-        EditText purr = makeEditText();
-        EditText nyan = makeEditText();
-        EditText miau = makeEditText();
-        EditText tilde = makeEditText();
-        EditText longFace = makeEditText();
-
-        // Every watcher in order
-        addTextWatcherForSettings(shortFace, "chanceShortFace", 30);
-        addTextWatcherForSettings(extraW, "chanceExtraW", 0);
-        addTextWatcherForSettings(purr, "chancePurr", 0);
-        addTextWatcherForSettings(nyan, "chanceNyan", 0);
-        addTextWatcherForSettings(miau, "chanceMiau", 0);
-        addTextWatcherForSettings(tilde, "chanceTilde", 0);
-        addTextWatcherForSettings(longFace, "chanceLongFace", 0);
-
-        // Add views to the layout
-        lay.addView(dragHandle);
-        lay.addView(divider);
-        lay.addView(padding);
-
-        lay.addView(lChanceShortFace);
-        lay.addView(shortFace);
-        // Allow extra //
-        lay.addView(a);
-
-        lay.addView(lChanceExtraW);
-        lay.addView(extraW);
-
-        lay.addView(lChancePurr);
-        lay.addView(purr);
-
-        lay.addView(lChanceNyan);
-        lay.addView(nyan);
-
-        lay.addView(lChanceMiau);
-        lay.addView(miau);
-
-        lay.addView(lChanceTilde);
-        lay.addView(tilde);
-
-        lay.addView(lChanceLongFace);
-        lay.addView(longFace);
-
-        lay.addView(z);
-
-        lay.addView(st);
-
-        lay.addView(fo);
-        lay.addView(b);
-        lay.addView(button);
-
-        // Add emoji settings
-        lay.addView(emojiLabel);
-        lay.addView(emojiInput);
-
-        return lay;
+        layout.addView(emojiInput);
     }
 
+    private void addColorPickerButton(LinearLayout layout, String[] phrases, Context context) {
+        Button colorPickerButton = new Button(context);
+        colorPickerButton.setText(phrases[15]);
+        colorPickerButton.setBackgroundColor(ACCENT_COLOR);
+        colorPickerButton.setTextColor(Color.WHITE);
+        colorPickerButton.setOnClickListener(f -> {
+            com.github.aesh.ColorPicker picker = new com.github.aesh.ColorPicker();
+            Utils.openPageWithProxy(context, picker);
+        });
+        layout.addView(colorPickerButton);
+    }
+
+    private String[] getPhrases(Context context) {
+        return esLang(context) ? getSpanishPhrases() : getEnglishPhrases();
+    }
+
+    private String[] getEnglishPhrases() {
+        return new String[] {
+            "   Percent chance of :3",
+            "   Percent chance of extra character\n   E.G. meoww, purrr, nyann, ect",
+            "   Percent chance of replacing meow with *purr*",
+            "   Percent chance of replacing meow and *purr* with nyan",
+            "   Percent chance of overriding everything with miau",
+            "   Percent chance of placing a tilde after the first word ~",
+            "   Percent chance of using ≽^•⩊•^≼ instead of :3",
+            "   Ignore everything and always use miau",
+            "Allow more phrases",
+            "E.G. *purr*, nyan, mreeowww, etc",
+            "Always force miau",
+            "miauu :3",
+            "-- BetterSilentTyping Settings --",
+            "Show Toast Message When Silent Typing is Toggled",
+            "Hide Keyboard Icon",
+            "Open Color Picker",
+            "Custom Meow Emoji",
+            "Set a custom emoji for the meow button"
+        };
+    }
+
+    private String[] getSpanishPhrases() {
+        return new String[] {
+            "   Probabilidad de :3",
+            "   Probabilidad de Más Caracteres\n   Ej. miauu, purrr, nyann, etc.",
+            "   Probabilidad de sustituir meow con « *purr* »",
+            "   Probabilidad de sustituir meow y *purr* por « nyan »",
+            "   Probabilidad de sustituir Todo por « miau »",
+            "   Probabilidad de Añadir una Virgulilla Después la Palabra Principal ~",
+            "   Probabilidad de Usar ≽^•⩊•^≼ en Lugar de :3",
+            "   Ignorar Todas las Otras y Siempre usar « miau »",
+            "Permitir más Frases",
+            "Ej. *purr*, nyan, mreeowww, etc.",
+            "Siempre Forzar miau",
+            "miau :3",
+            "-- Opciones para BetterSilentTyping --",
+            "Mostrar Mensaje Emergente Cuando se Conmute SilentTyping",
+            "Ocultar Ícono del Teclado",
+            "Abrir Selector de Color",
+            "Emoji de Meow Personalizado",
+            "Establece un emoji personalizado para el botón de meow"
+        };
+    }
+
+    // Existing helper methods remain the same
     public void addTextWatcherForSettings(EditText editText, String settingsKey, int defVal) {
         int savedValue = settings.getInt(settingsKey, defVal);
         editText.setText(String.valueOf(savedValue));
@@ -293,17 +312,12 @@ public class Settings extends AppBottomSheet {
         EditText editText = new EditText(getContext());
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint("0 ~ 100");
-        editText.setTextColor(Color.WHITE);
-        editText.setHintTextColor(Color.GRAY);
-        editText.setCursorVisible(false);
         return editText;
     }
 
     public TextView makeTextView(String text) {
         TextView tv = new TextView(getContext());
         tv.setText(text);
-        tv.setTextColor(Color.WHITE);
-        tv.setTypeface(null, Typeface.BOLD);
         return tv;
     }
 
