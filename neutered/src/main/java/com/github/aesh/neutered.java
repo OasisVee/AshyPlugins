@@ -41,7 +41,6 @@ import java.util.Random;
 @AliucordPlugin
 public class neutered extends Plugin {
 
-
     public static SettingsAPI Settings;
 
     FrameLayout carViewLayout;
@@ -93,8 +92,9 @@ public class neutered extends Plugin {
         patcher.patch(WidgetChatInputEditText.class.getConstructor(FlexEditText.class, MessageDraftsRepo.class), new Hook(callFrame -> {
             WidgetChatInputEditText thisobj = ((WidgetChatInputEditText) callFrame.thisObject);
             try {
-
-                car = neutered.emojiToDrawable(context, "🐈");
+                // Get custom emoji from settings, fallback to default 🐈
+                String customEmoji = settings.getString("meowEmoji", "🐈");
+                car = neutered.emojiToDrawable(context, customEmoji);
 
                 // Ignore the warning it'll be fine trust :3
                 FlexEditText etext = (FlexEditText) ReflectUtils.getField(thisobj, "editText");
@@ -179,7 +179,6 @@ public class neutered extends Plugin {
                         }
                     }
 
-
                     else if(!settings.getBool("extraMeows", false) && !settings.getBool("forceMiau", false)) {
                         meow = "meow";
                         if(randFaceShort < settings.getInt("chanceShortFace", 0) -1) { meow += " :3"; }
@@ -204,7 +203,6 @@ public class neutered extends Plugin {
                             } else { meow += " :3"; }
                         }
                     }
-
 
                     sendMeow nyan = new sendMeow();
                     long channelId = StoreStream.getChannelsSelected().getId();
