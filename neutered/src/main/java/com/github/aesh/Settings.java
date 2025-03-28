@@ -187,7 +187,15 @@ public class Settings extends AppBottomSheet {
                     
                     // Show a toast to confirm
                     Toast.makeText(context, "Meow emoji set to: " + emoji, Toast.LENGTH_SHORT).show();
+                } else {
+                    // If emoji is deleted, reset to default
+                    settings.setString("meowEmoji", "🚗");
+                    emojiInput.setText("🚗");
+                    Toast.makeText(context, "Meow emoji reset to default: 🚗", Toast.LENGTH_SHORT).show();
                 }
+
+                // Prompt restart like in BetterChatbox
+                Utils.promptRestart("Restart to apply changes");
             }
         });
 
