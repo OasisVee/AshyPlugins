@@ -92,8 +92,8 @@ public class neutered extends Plugin {
         patcher.patch(WidgetChatInputEditText.class.getConstructor(FlexEditText.class, MessageDraftsRepo.class), new Hook(callFrame -> {
             WidgetChatInputEditText thisobj = ((WidgetChatInputEditText) callFrame.thisObject);
             try {
-                // Get custom emoji from settings, fallback to default 🐈
-                String customEmoji = settings.getString("meowEmoji", "🐈");
+                // Get custom emoji from settings, fallback to default 🚗
+                String customEmoji = settings.getString("meowEmoji", "🚗");
                 car = neutered.emojiToDrawable(context, customEmoji);
 
                 // Ignore the warning it'll be fine trust :3
@@ -102,14 +102,14 @@ public class neutered extends Plugin {
 
                 carViewLayout = new FrameLayout(context);
                 carView = new ImageView(context);
-                ImageView imageView1 = new ImageView(context);
                 carView.setImageDrawable(car);
 
-                carViewLayout.addView(carView);
-
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) carView.getLayoutParams();
-                params.width = DimenUtils.dpToPx(40);
-                params.height = DimenUtils.dpToPx(30);
+                // Set the layout parameters to ensure the hitbox is only as big as the emoji
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    DimenUtils.dpToPx(40),
+                    DimenUtils.dpToPx(30)
+                );
+                carViewLayout.addView(carView, params);
 
                 // SILENT TYPING
                 disableImage = neutered.emojiToDrawable(context, "❌");
@@ -117,23 +117,16 @@ public class neutered extends Plugin {
 
                 keyboardViewLayout = new FrameLayout(context);
                 keyboardView = new ImageView(context);
-                ImageView imageView2 = new ImageView(context);
                 keyboardView.setImageDrawable(keyboard);
 
-                imageView2.setImageDrawable(disableImage);
-                keyboardViewLayout.addView(keyboardView);
-                keyboardViewLayout.addView(imageView2);
-
-                FrameLayout.LayoutParams karams = (FrameLayout.LayoutParams) keyboardView.getLayoutParams();
-                karams.width=DimenUtils.dpToPx(30);
-                karams.height=DimenUtils.dpToPx(35);
-
-                keyboardView.setLayoutParams(karams);
-                imageView2.setLayoutParams(karams);
+                FrameLayout.LayoutParams keyboardParams = new FrameLayout.LayoutParams(
+                    DimenUtils.dpToPx(30),
+                    DimenUtils.dpToPx(35)
+                );
+                keyboardViewLayout.addView(keyboardView, keyboardParams);
 
                 if(hideKeyboard) {
                     keyboardViewLayout.setVisibility(View.GONE);
-                    params.width=DimenUtils.dpToPx(0);
                 }
 
                 // Running on a diff thread fixes instability ~
@@ -209,22 +202,15 @@ public class neutered extends Plugin {
                     nyan.sendMessage(channelId, meow);
                 });
 
-                View one = group.getChildAt(1);
-                group.removeView(one);
-
-                // the actual point of this plugin -- order that views are added
                 group.addView(carViewLayout);
 
-                // Don't ask it works
-                ViewGroup.LayoutParams larams = one.getLayoutParams();
-                larams.height += .01;
-                carViewLayout.setLayoutParams(larams);
+                View one = group.getChildAt(1);
+                group.removeView(one);
 
                 group.addView(keyboardViewLayout);
                 keyboardViewLayout.setLayoutParams(one.getLayoutParams());
                 updateButton();
                 group.addView(one);
-                // [ Enviar mensaje a #pl... CAR KEYBOARD EMOJI ]
 
             } catch (Exception e) {
                 Utils.showToast(sp[1]);
