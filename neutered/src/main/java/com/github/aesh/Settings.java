@@ -192,11 +192,11 @@ public class Settings extends AppBottomSheet {
 
         EditText emojiInput = makeEditText();
         emojiInput.setInputType(InputType.TYPE_CLASS_TEXT);
-        emojiInput.setHint("🐈");
+        emojiInput.setHint("🚗");
         emojiInput.setTextColor(TEXT_COLOR);
         emojiInput.setHintTextColor(Color.GRAY);
         
-        String currentEmoji = settings.getString("meowEmoji", "🐈");
+        String currentEmoji = settings.getString("meowEmoji", "🚗");
         emojiInput.setText(currentEmoji);
 
         emojiInput.addTextChangedListener(new TextWatcher() {
@@ -214,7 +214,7 @@ public class Settings extends AppBottomSheet {
                     Toast.makeText(context, "Meow emoji set to: " + emoji, Toast.LENGTH_SHORT).show();
                 } else {
                     settings.remove("meowEmoji");
-                    emojiInput.setHint("🐈");
+                    emojiInput.setHint("🚗");
                     Toast.makeText(context, "Meow emoji reset to default", Toast.LENGTH_SHORT).show();
                 }
                 Utils.promptRestart("Restart to apply changes");
